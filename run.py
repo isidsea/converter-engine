@@ -18,17 +18,18 @@ def run_converter(crawler):
 		parser = ParserFactory.get_parser(ParserFactory.AUTHOR_INFO)
 		author = parser.parse(mention)
 		try:
-			saver = SaverFactory.get_saver(SaverFactory.MENTION)
-			saver.save(mention)
+			mention_saver = SaverFactory.get_saver(SaverFactory.MENTION)
+			mention_saver.save(mention)
 
-			saver = SaverFactory.get_saver(SaverFactory.AUTHOR_INFO)
-			saver.save(author)
+			author_saver = SaverFactory.get_saver(SaverFactory.AUTHOR_INFO)
+			author_saver.save(author)
 
+			mention_saver.set_as_converted(crawler, mention)
 			print(fmtstr("[ConverterEngine][success] Converted One Document!", "green"))
 		except DuplicateMention as ex:
 			print(fmtstr("[ConverterEngine][error] %s" % ex, "red"))
-			saver = SaverFactory.get_saver(SaverFactory.MENTION)
-			saver.set_as_converted(crawler, mention)
+			mention_saver = SaverFactory.get_saver(SaverFactory.MENTION)
+			mention_saver.set_as_converted(crawler, mention)
 		except NetworkTimeout as ex:
 			print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
 
