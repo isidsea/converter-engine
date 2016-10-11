@@ -12,16 +12,14 @@ def run_converter(crawler):
 	print("[ConverterEngine][debug] Found %s document(s)" % docs.count())
 
 	for doc in docs:
+		parser = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
+		mention = parser.parse(crawler, doc)
+
+		parser = ParserFactory.get_parser(ParserFactory.AUTHOR_INFO)
+		author = parser.parse(mention)
 		try:
-			parser = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
-			mention = parser.parse(crawler, doc)
-
-			parser = ParserFactory.get_parser(ParserFactory.AUTHOR_INFO)
-			author = parser.parse(mention)
-
 			saver = SaverFactory.get_saver(SaverFactory.MENTION)
 			saver.save(mention)
-			saver.set_as_converted(crawler, mention)
 
 			saver = SaverFactory.get_saver(SaverFactory.AUTHOR_INFO)
 			saver.save(author)
@@ -31,6 +29,9 @@ def run_converter(crawler):
 			print(fmtstr("[ConverterEngine][error] %s" % ex, "red"))
 		except NetworkTimeout as ex:
 			print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
+		finally:
+			saver = SaverFactory.get_saver(SaverFactory.MENTION)
+			saver.set_as_converted(crawler, mention)
 
 if __name__ == "__main__":
 	source = Source()
