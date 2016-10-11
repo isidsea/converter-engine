@@ -32,6 +32,7 @@ class MentionTemplate(object):
 		self.source_type                       = ""
 		self.source_name                       = ""
 		self.sent_from_host                    = ""
+		self.sent_from_crawler                 = ""
 		self.date_inserted_into_crawler_db     = ""
 		self.date_inserted_into_crawler_db_iso = ""
 		self.date_inserted_into_central_db     = ""
@@ -89,6 +90,14 @@ class MentionTemplate(object):
 			result.update({prop:getattr(self,prop)})
 
 		return result
+
+	@property
+	def SentFromCrawler(self):
+		return self.sent_from_crawler
+
+	@SentFromCrawler.setter
+	def SentFromCrawler(self, value):
+		self.sent_from_crawler = value
 
 	@property
 	def MentionId(self):
