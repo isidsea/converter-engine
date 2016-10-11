@@ -27,11 +27,10 @@ def run_converter(crawler):
 			print(fmtstr("[ConverterEngine][success] Converted One Document!", "green"))
 		except DuplicateMention as ex:
 			print(fmtstr("[ConverterEngine][error] %s" % ex, "red"))
-		except NetworkTimeout as ex:
-			print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
-		finally:
 			saver = SaverFactory.get_saver(SaverFactory.MENTION)
 			saver.set_as_converted(crawler, mention)
+		except NetworkTimeout as ex:
+			print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
 
 if __name__ == "__main__":
 	source = Source()
