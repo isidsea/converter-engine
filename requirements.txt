@@ -1,0 +1,15 @@
+arrow==0.8.0
+blessings==1.6
+chardet==2.2.1
+colorama==0.2.5
+curtsies==0.2.9
+futures==3.0.5
+html5lib==0.999
+pycountry==1.20
+pymongo==3.3.0
+python-dateutil==2.5.3
+requests==2.2.1
+six==1.5.2
+urllib3==1.7.1
+wcwidth==0.1.7
+wheel==0.24.0
