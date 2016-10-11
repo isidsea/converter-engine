@@ -1,0 +1,10 @@
+{
+	"Kaskus Crawler":{
+		"type": "Forums",
+		"db":{
+			"address":"mongo",
+			"name": "kaskus",
+			"table": "data"
+		}
+	}
+}
