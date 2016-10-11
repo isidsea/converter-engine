@@ -10,14 +10,9 @@ class AuthorInfoSaver:
 		conn = pymongo.MongoClient("mongodb://alex:07081984@220.100.163.138/?authSource=admin")
 		db   = conn["isid"]
 
-		documents  = db.author_info.find({
-			"AuthorScreenName" : author_info["AuthorScreenName"],
-			      "AuthorType" : author_info["AuthorType"],
-			        "AuthorId" : author_info["AuthorId"]
-	  	})
-		is_duplicate = True if documents.count() > 0 else False
-
-		if is_duplicate:
+		try:
+			db.author_info.insert_one(author_info)
+		except pymongo.errors.DuplicateKeyError:
 			db.author_info.update_one(
 				{
 				  	"AuthorScreenName": author_info["AuthorScreenName"],
@@ -32,6 +27,4 @@ class AuthorInfoSaver:
 					}
 				}
 			)
-		else:
-			db.author_info.insert_one(author_info)
 		conn.close()
