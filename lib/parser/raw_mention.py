@@ -26,7 +26,8 @@ class RawMentionParser:
 		source_name  = raw["permalink"]
 		source_name  = urlparse(source_name).netloc.lower().replace("www.","")
 		source_name  = "%s%s" % (source_name[0].upper(), source_name[1:])
-		mention_type = "%s_post" % source_name
+		mention_type = "{}_post" if crawler.type == "Blogs" or crawler.type == "Forums" else "{}_article" if crawler.type == "News" else source_name
+		mention_type = mention_type.format(source_name)
 		mention_type = mention_type.lower()
 
 		template = MentionTemplate(source=crawler)
