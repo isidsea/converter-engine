@@ -1,3 +1,4 @@
+from ..exceptions import NetworkTimeout
 import pymongo
 
 class AuthorInfoSaver:
@@ -27,4 +28,7 @@ class AuthorInfoSaver:
 					}
 				}
 			)
-		conn.close()
+		except pymongo.errors.NetworkTimeout:
+			raise NetworkTimeout("Network Timeout!")
+		finally:
+			conn.close()

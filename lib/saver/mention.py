@@ -30,8 +30,13 @@ class MentionSaver:
 			crawler.db.name
 		))
 		db = conn[crawler.db.name]
-		db[crawler.db.collection].update(
-			{"permalink":mention.MentionDirectLink},
-			{"$set":{"converted":True}}
-		)
-		conn.close()
+		
+		try:
+			db[crawler.db.collection].update(
+				{"permalink":mention.MentionDirectLink},
+				{"$set":{"converted":True}}
+			)
+		except pymongo.errors.NetworkTimeout:
+			raise NetworkTimeout("Network Timeout!")
+		finally:
+			conn.close()
