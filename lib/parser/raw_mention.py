@@ -22,6 +22,7 @@ class RawMentionParser:
 		author_id         = raw["author_id"] if "author_id" in raw else raw["author_name"] if "author_name" in raw else raw["author"] if "author" in raw else ""
 		author_name       = raw["author_name"] if "author_name" in raw else raw["author"] if "author" in raw else ""
 		country           = raw["_country"] if "_country" in raw else raw["country"] if "country" in raw else ""
+		sent_from_crawler = raw["_crawled_by"] if "_crawled_by" in raw else crawler.name
 
 		source_name  = raw["permalink"]
 		source_name  = urlparse(source_name).netloc.lower().replace("www.","")
@@ -44,7 +45,7 @@ class RawMentionParser:
 		template.SourceType                   = crawler.type
 		template.SourceName                   = source_name
 		template.SentFromHost                 = "220.100.163.132"
-		template.SentFromCrawler              = crawler.name
+		template.SentFromCrawler              = sent_from_crawler
 		template.DateInsertedIntoCrawlerDB    = raw["_insert_time"]
 		template.DateInsertedIntoCrawlerDBISO = raw["_insert_time"]
 		template.DateInsertedIntoCentralDB    = arrow.now().datetime
