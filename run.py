@@ -9,7 +9,7 @@ import multiprocessing
 def run_converter(crawler):
 	extractor = ExtractorFactory.get_extractor(ExtractorFactory.NOT_CONVERTED)
 	docs      = extractor.extract(crawler)
-	print("[ConverterEngine][debug] Found %s document(s)" % docs.count())
+	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
 
 	for doc in docs:
 		parser = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
@@ -25,9 +25,9 @@ def run_converter(crawler):
 			author_saver.save(author)
 
 			mention_saver.set_as_converted(crawler, mention)
-			print(fmtstr("[ConverterEngine][success] Converted One Document!", "green"))
+			print(fmtstr("[%s][success] Converted One Document!" % crawler.name, "green"))
 		except DuplicateMention as ex:
-			print(fmtstr("[ConverterEngine][error] %s" % ex, "red"))
+			print(fmtstr("[%s][error] %s" % (crawler.name, ex), "red"))
 			mention_saver = SaverFactory.get_saver(SaverFactory.MENTION)
 			mention_saver.set_as_converted(crawler, mention)
 		except NetworkTimeout as ex:
