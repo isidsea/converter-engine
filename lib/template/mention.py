@@ -346,13 +346,14 @@ class MentionTemplate(object):
 		return self.country
 
 	@Country.setter
-	def Country(self, value):		
-		country      = pycountry.countries.get(alpha3=value)
-		country      = country.name.upper()
-		country 	 = country.replace(" ","_")
+	def Country(self, value):
+		if len(value) == 3:
+			value = pycountry.countries.get(alpha3=value)
+		value = value.name.upper()
+		value = value.replace(" ","_")
 
-		if country == "VIET_NAM":
-			country = "VIETNAM"
+		if value == "VIET_NAM":
+			value = "VIETNAM"
 
-		self.country = country
+		self.country = value
 	
