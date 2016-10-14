@@ -49,5 +49,5 @@ class RawMentionParser:
 		template.DateInsertedIntoCrawlerDBISO = raw["_insert_time"]
 		template.DateInsertedIntoCentralDB    = arrow.now().datetime
 		template.DateInsertedIntoCentralDBISO = arrow.utcnow().datetime
-		template.country                      = country
+		template.Country                      = country
 		return template
