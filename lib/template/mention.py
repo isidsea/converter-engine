@@ -347,14 +347,15 @@ class MentionTemplate(object):
 
 	@Country.setter
 	def Country(self, value):
+		# force "PHP" to PHILIPPINES
+		if value == "PHP":
+			value = "PHILIPPINES"
+			
 		if len(value) == 3:
 			value = pycountry.countries.get(alpha3=value).name
 		value = value.upper()
 		value = value.replace(" ","_")
 
-		# force "PHP" to PHILIPPINES
-		if value == "PHP":
-			value = "PHILIPPINES"
 
 		if value == "VIET_NAM":
 			value = "VIETNAM"
