@@ -348,8 +348,8 @@ class MentionTemplate(object):
 	@Country.setter
 	def Country(self, value):
 		if len(value) == 3:
-			value = pycountry.countries.get(alpha3=value)
-		value = value.name.upper()
+			value = pycountry.countries.get(alpha3=value).name
+		value = value.upper()
 		value = value.replace(" ","_")
 
 		if value == "VIET_NAM":
