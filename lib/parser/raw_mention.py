@@ -23,6 +23,7 @@ class RawMentionParser:
 		author_name       = raw["author_name"] if "author_name" in raw else raw["author"] if "author" in raw else ""
 		country           = raw["_country"] if "_country" in raw else raw["country"] if "country" in raw else ""
 		sent_from_crawler = raw["_crawled_by"] if "_crawled_by" in raw else crawler.name
+		mention_title     = raw["title"] if "title" in raw else ""
 
 		source_name  = raw["permalink"]
 		source_name  = urlparse(source_name).netloc.lower().replace("www.","")
@@ -33,6 +34,7 @@ class RawMentionParser:
 
 		template = MentionTemplate(source=crawler)
 		template.MentionId   				  = hashlib.sha256(_id.encode("utf-8")).hexdigest()
+		template.MentionTitle                 = mention_title
 		template.MentionText 			  	  = raw["content"]
 		template.MentionMiscInfo 			  = mention_misc_info
 		template.MentionType     			  = mention_type 

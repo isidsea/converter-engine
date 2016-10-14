@@ -41,43 +41,6 @@ class MentionTemplate(object):
 		self.country                           = ""
 		self.ttl                               = arrow.utcnow().datetime
 
-
-	def patch(self, document=None):
-		assert document is not None, "document is not defined."
-		_id = document["permalink"] if "permalink" in document else document["url"] if "url" in document else None
-		
-		source_name = document["permalink"]
-		source_name = urlparse(source_name)
-		source_name = source_name.netloc
-		source_name = source_name.lower().replace("www.","")
-		source_name = "{}{}".format(source_name[0].upper(), source_name[1:])
-
-		mention_type = ""
-		if self.source.type == "Forums":
-			mention_type = "forum_post"
-		elif self.source.type == "Blogs":
-			mention_type = "blog_post"
-
-		self.MentionId                    = hashlib.sha256(_id.encode("utf-8")).hexdigest() 
-		self.MentionText                  = document["content"]
-		self.MentionMiscInfo			  = document["_thread_link"] if "_thread_link" in document else ""
-		self.MentionType                  = mention_type
-		self.MentionDirectLink            = document["permalink"]
-		self.MentionCreatedDate           = document["published_date"]
-		self.MentionCreatedDateISO        = document["published_date"]
-		self.AuthorId                     = document["author_id"] if "author_id" in document else document["author_name"]
-		self.AuthorName                   = document["author_name"]
-		self.AuthorDisplayName            = document["author_name"]
-		self.SourceType                   = self.source.type
-		self.SourceName                   = source_name
-		self.SentFromHost                 = "220.100.163.132"
-		self.DateInsertedIntoCrawlerDB    = document["_insert_time"] # Insert time is in UTC, it has tzinfo
-		self.DateInsertedIntoCrawlerDBISO = document["_insert_time"]
-		self.DateInsertedIntoCentralDB    = arrow.now().datetime
-		self.DateInsertedIntoCentralDBISO = arrow.utcnow().datetime
-		self.Country                      = document["_country"]
-		return self
-
 	def to_dict(self):
 		""" 
 			This will conver all properties become a dict. 
