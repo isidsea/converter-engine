@@ -352,6 +352,10 @@ class MentionTemplate(object):
 		value = value.upper()
 		value = value.replace(" ","_")
 
+		# force "PHP" to PHILIPPINES
+		if value == "PHP":
+			value = "PHILIPPINES"
+
 		if value == "VIET_NAM":
 			value = "VIETNAM"
 
