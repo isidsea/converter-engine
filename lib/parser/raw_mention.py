@@ -1,6 +1,6 @@
 from ..factory.validator import ValidatorFactory
 from ..template.mention  import MentionTemplate
-from ..exceptions        import ParseError
+from ..exceptions        import ParseError, ValidationError
 from urllib.parse        import urlparse
 import arrow
 import hashlib
@@ -31,6 +31,9 @@ class RawMentionParser:
 		mention_type = "{}_post" if crawler.type == "Blogs" or crawler.type == "Forums" else "{}_article" if crawler.type == "News" else source_name
 		mention_type = mention_type.format(source_name)
 		mention_type = mention_type.lower()
+
+		if country is None:
+			raise ValidationError("Country cannot be None.")
 
 		template = MentionTemplate(source=crawler)
 		template.MentionId   				  = hashlib.sha256(_id.encode("utf-8")).hexdigest()
