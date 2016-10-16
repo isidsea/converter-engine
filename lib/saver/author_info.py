@@ -30,6 +30,8 @@ class AuthorInfoSaver:
 			)
 		except pymongo.errors.NetworkTimeout:
 			raise NetworkTimeout("Network Timeout!")
+		except pymongo.errors.AutoReconnect:
+			raise NetworkTimeout("Auto Reconnect!")
 		except pymongo.errors.ServerSelectionTimeoutError:
 			raise NetworkTimeout("Server Selection Timeout!")
 		finally:
