@@ -22,6 +22,6 @@ class AuthorInfoParser:
 			            "AuthorLanguage" : "",
 			"AuthorTotalMentionsCrawled" : 1,
 			           "LastUpdatedDate" : update_time,
-			        "LastUpdatedDateISO" : update_time_iso.replace(" ","T") + "Z"
+			        "LastUpdatedDateISO" : update_time_iso.replace(" ","T")
 		}
 		return author_info
