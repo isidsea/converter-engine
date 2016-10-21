@@ -24,6 +24,8 @@ class RawMentionParser:
 		country           = raw["_country"] if "_country" in raw else raw["country"] if "country" in raw else ""
 		sent_from_crawler = raw["_crawled_by"] if "_crawled_by" in raw else crawler.name
 		mention_title     = raw["title"] if "title" in raw else ""
+		
+		mention_title     = "" if mention_title is None else mention_title
 
 		source_name  = raw["permalink"]
 		source_name  = urlparse(source_name).netloc.lower().replace("www.","")
