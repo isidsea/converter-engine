@@ -2,11 +2,17 @@ from lib.object.source     import Source
 from lib.factory.extractor import ExtractorFactory
 from lib.factory.parser    import ParserFactory
 from lib.factory.saver     import SaverFactory
+from lib.factory.logger    import LoggerFactory
 from lib.exceptions		   import DuplicateMention, NetworkTimeout, ValidationError
 from curtsies              import fmtstr
 import multiprocessing
 
 def run_converter(crawler):
+	log_saver = SaverFactory.get_saver(SaverFactory.LOG)
+	logger    = LoggerFactory.get_logger(LoggerFactory.CONVERTER)
+	logger.log(level=logger.INFO, state="START", message="Converting: %s" % crawler.name)
+	log_saver.save(logger)
+
 	extractor = ExtractorFactory.get_extractor(ExtractorFactory.NOT_CONVERTED)
 	docs      = extractor.extract(crawler)
 	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
@@ -39,6 +45,8 @@ def run_converter(crawler):
 		except ValidationError as ex:
 			print(fmtstr("[%s][error] %s" % (crawler.name, ex),"red"))
 
+	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name)
+	log_saver.save(logger)
 if __name__ == "__main__":
 	source = Source()
 	with multiprocessing.Pool(20) as pool:
