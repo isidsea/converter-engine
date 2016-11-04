@@ -14,7 +14,7 @@ class LogSaver:
 
 		db.converter.create_index("level", background=True)
 		db.converter.create_index("state", background=True)
-		db.converter.create_index("TTL", expireAfterSeconds=60*60*24*15)
+		db.converter.create_index("TTL", expireAfterSeconds=60*60*24*2)
 
 		for log in logger.logs:
 			db.converter.insert_one(log)
