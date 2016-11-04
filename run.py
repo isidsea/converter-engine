@@ -17,6 +17,7 @@ def run_converter(crawler):
 	docs      = extractor.extract(crawler)
 	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
 
+	number_of_converted = 0
 	for doc in docs:
 		try:
 			parser  = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
@@ -32,6 +33,7 @@ def run_converter(crawler):
 			author_saver.save(author)
 
 			mention_saver.set_as_converted(crawler, mention)
+			number_of_converted += 1
 			print(fmtstr("[%s][success] Converted One Document!" % crawler.name, "green"))
 		except DuplicateMention as ex:
 			try:
@@ -45,7 +47,7 @@ def run_converter(crawler):
 		except ValidationError as ex:
 			print(fmtstr("[%s][error] %s" % (crawler.name, ex),"red"))
 
-	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name, number_of_documents=docs.count())
+	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name, number_of_documents=number_of_converted)
 	log_saver.save(logger)
 if __name__ == "__main__":
 	source = Source()
