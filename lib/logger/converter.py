@@ -13,7 +13,7 @@ class ConverterLogger(Logger):
 		document = {
 			       		  "level" : level,
 			       		  "state" : state,
-			"number_of_documents" : number_of_documents
+			"number_of_documents" : number_of_documents,
 				   "_insert_time" : arrow.utcnow().datetime,
 			         		"TTL" : arrow.utcnow().datetime
 		}
