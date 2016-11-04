@@ -45,7 +45,7 @@ def run_converter(crawler):
 		except ValidationError as ex:
 			print(fmtstr("[%s][error] %s" % (crawler.name, ex),"red"))
 
-	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name)
+	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name, number_of_documents=docs.count())
 	log_saver.save(logger)
 if __name__ == "__main__":
 	source = Source()
