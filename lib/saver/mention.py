@@ -44,7 +44,7 @@ class MentionSaver:
 		db   = conn["monitor"]
 		db.status.update(
 			{"crawler_name": re.compile(crawler.name, re.IGNORECASE)}, 
-			{"$set":{"last_converted_time": arrow.utcnow().datetime}},
+			{"$set":{"crawler_name": crawler.name, "last_converted_time": arrow.utcnow().datetime}},
 			upsert = True
 		)
 		conn.close()
