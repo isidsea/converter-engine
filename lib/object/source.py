@@ -15,3 +15,4 @@ class Source:
 				  db = Database(**doc["db"])
 			)
 			self.crawlers.append(crawler)
+		conn.close()

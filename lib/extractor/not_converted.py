@@ -5,6 +5,9 @@ class NotConvertedExtractor:
 		pass
 
 	def extract(self, crawler=None):
+		""" Exceptions:
+			- AssertionError
+		"""
 		assert crawler is not None, "database is not defined."
 
 		conn = pymongo.MongoClient("mongodb://%s/%s" % (

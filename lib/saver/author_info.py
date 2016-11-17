@@ -6,6 +6,10 @@ class AuthorInfoSaver:
 		pass
 
 	def save(self, author_info=None):
+		""" Exception:
+			- AssertionError
+			- NetworkTimeout
+		"""
 		assert author_info is not None, "mention is not defined."
 
 		conn = pymongo.MongoClient("mongodb://alex:07081984@220.100.163.138/?authSource=admin")
