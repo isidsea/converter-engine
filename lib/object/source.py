@@ -4,7 +4,7 @@ import pymongo
 
 class Source:
 	def __init__(self):
-		conn = pymongo.MongoClient("mongodb://220.100.163.132/monitor")
+		conn = pymongo.MongoClient("mongodb://mongo:27017/monitor")
 		db   = conn["monitor"]
 		
 		self.crawlers = []
