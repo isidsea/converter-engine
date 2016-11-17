@@ -2,22 +2,21 @@ from lib.object.source     import Source
 from lib.factory.extractor import ExtractorFactory
 from lib.factory.parser    import ParserFactory
 from lib.factory.saver     import SaverFactory
-from lib.factory.logger    import LoggerFactory
+from lib.logger            import Logger
 from lib.exceptions		   import DuplicateMention, NetworkTimeout, ValidationError
 from curtsies              import fmtstr
 import multiprocessing
+import logging
 
 def run_converter(crawler):
-	log_saver = SaverFactory.get_saver(SaverFactory.LOG)
-	logger    = LoggerFactory.get_logger(LoggerFactory.CONVERTER)
-	logger.log(level=logger.INFO, state="START", message="Converting: %s" % crawler.name)
-	log_saver.save(logger)
-
+	""" Exceptions:
+		- AssertionError (RawMentionParser, AuthorInfoParser, MentionSaver, AuthorInfoSaver)
+	"""
+	logger    = logging.getLogger(__name__)
 	extractor = ExtractorFactory.get_extractor(ExtractorFactory.NOT_CONVERTED)
 	docs      = extractor.extract(crawler)
 	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
 
-	number_of_converted = 0
 	for doc in docs:
 		try:
 			parser  = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
@@ -33,23 +32,16 @@ def run_converter(crawler):
 			author_saver.save(author)
 
 			mention_saver.set_as_converted(crawler, mention)
-			number_of_converted += 1
 			print(fmtstr("[%s][success] Converted One Document!" % crawler.name, "green"))
-		except DuplicateMention as ex:
-			try:
-				print(fmtstr("[%s][error] %s" % (crawler.name, ex), "red"))
-				mention_saver = SaverFactory.get_saver(SaverFactory.MENTION)
-				mention_saver.set_as_converted(crawler, mention)
-			except NetworkTimeout as ex:
-				print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
-		except NetworkTimeout as ex:
-			print(fmtstr("[ConverterEngine][error] Network Timeout.", "red"))
 		except ValidationError as ex:
-			print(fmtstr("[%s][error] %s" % (crawler.name, ex),"red"))
+			logger.error(str(ex), exc_info=True)
+		except DuplicateMention as ex:
+			pass
+		except NetworkTimeout as ex:
+			self.logger.error(str(ex), exc_info=True)
 
-	logger.log(level=logger.INFO, state="STOP", message="Stopped: %s" % crawler.name, number_of_documents=number_of_converted)
-	log_saver.save(logger)
 if __name__ == "__main__":
+	Logger()
 	source = Source()
 	with multiprocessing.Pool(20) as pool:
 		pool.map(run_converter, source.crawlers)

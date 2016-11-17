@@ -11,6 +11,10 @@ class RawMentionParser:
 
 
 	def parse(self, crawler=None, raw=None):
+		""" Excptions:
+			- AssertionError (RawMentionValidator)
+			- ValidationError (RawMentionValidator)
+		"""
 		assert raw     is not None, "raw is not defined."
 		assert crawler is not None, "cralwer is not defined."
 
@@ -37,7 +41,7 @@ class RawMentionParser:
 		if country is None:
 			raise ValidationError("Country cannot be None.")
 
-		template = MentionTemplate(source=crawler)
+		template 						      = MentionTemplate(source=crawler)
 		template.MentionId   				  = hashlib.sha256(_id.encode("utf-8")).hexdigest()
 		template.MentionTitle                 = mention_title
 		template.MentionText 			  	  = raw["content"]

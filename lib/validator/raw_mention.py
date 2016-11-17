@@ -5,6 +5,10 @@ class RawMentionValidator:
 		pass
 
 	def validate(self, raw=None):
+		""" Exception:
+			- AssertionError
+			- ValidationError
+		"""
 		assert raw is not None, "raw is not defined."
 
 		if "permalink" not in raw and "url" not in raw:

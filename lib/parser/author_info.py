@@ -6,7 +6,10 @@ class AuthorInfoParser:
 		pass
 
 	def parse(self, mention=None):
-		assert mention             is not None, "mention is not defined."
+		""" Exceptions:
+			- AssertionError
+		"""
+		assert mention is not None, "mention is not defined."
 
 		update_time      = arrow.now().format("YYYY-MM-DD HH:mm:ss")
 		update_time_iso  = "%sZ" % arrow.utcnow().format("YYYY-MM-DDTHH:mm:ss")
