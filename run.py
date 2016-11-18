@@ -3,7 +3,7 @@ from lib.factory.extractor import ExtractorFactory
 from lib.factory.parser    import ParserFactory
 from lib.factory.saver     import SaverFactory
 from lib.logger            import Logger
-from lib.exceptions		   import DuplicateMention, NetworkTimeout, ValidationError
+from lib.exceptions		   import DuplicateMention, NetworkTimeout, ValidationError, CannotFindDocument
 from curtsies              import fmtstr
 import multiprocessing
 import logging
@@ -13,9 +13,15 @@ def run_converter(crawler):
 		- AssertionError (RawMentionParser, AuthorInfoParser, MentionSaver, AuthorInfoSaver)
 	"""
 	logger    = logging.getLogger(__name__)
-	extractor = ExtractorFactory.get_extractor(ExtractorFactory.NOT_CONVERTED)
-	docs      = extractor.extract(crawler)
-	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
+
+	try:
+		extractor = ExtractorFactory.get_extractor(ExtractorFactory.NOT_CONVERTED)
+		docs      = extractor.extract(crawler)
+		number_of_document = docs.count()
+	except CannotFindDocument as ex:
+		docs 			   = []
+		number_of_document = 0
+	print("[ConverterEngine][debug] Found %s document(s) in %s" % (number_of_document, crawler.name))
 
 	mention = None
 	for doc in docs:
