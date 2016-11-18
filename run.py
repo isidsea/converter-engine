@@ -17,6 +17,7 @@ def run_converter(crawler):
 	docs      = extractor.extract(crawler)
 	print("[ConverterEngine][debug] Found %s document(s) in %s" % (docs.count(), crawler.name))
 
+	mention = None
 	for doc in docs:
 		try:
 			parser  = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
@@ -36,7 +37,9 @@ def run_converter(crawler):
 		except ValidationError as ex:
 			logger.error(str(ex), exc_info=True)
 		except DuplicateMention as ex:
-			pass
+			if mention is not None:
+				mention_saver.set_as_converted(crawler, mention)
+			print(fmtstr("[%s][success] Ops! Duplicate document" % crawler.name, "red"))
 		except NetworkTimeout as ex:
 			logger.error(str(ex), exc_info=True)
 
