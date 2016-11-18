@@ -38,7 +38,7 @@ def run_converter(crawler):
 		except DuplicateMention as ex:
 			pass
 		except NetworkTimeout as ex:
-			self.logger.error(str(ex), exc_info=True)
+			logger.error(str(ex), exc_info=True)
 
 if __name__ == "__main__":
 	Logger()
