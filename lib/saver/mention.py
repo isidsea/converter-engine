@@ -15,7 +15,7 @@ class MentionSaver:
 		"""
 		assert mention is not None, "mention is not defined."
 
-		conn = pymongo.MongoClient("mongodb://alex:07081984@220.100.163.138/?authSource=admin")
+		conn = pymongo.MongoClient("mongodb://alex:07081984@172.16.163.138/?authSource=admin")
 		db   = conn["isid"]
 
 		try:
