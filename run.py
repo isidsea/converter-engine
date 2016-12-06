@@ -24,9 +24,10 @@ def run_converter(crawler):
 	print("[ConverterEngine][debug] Found %s document(s) in %s" % (number_of_document, crawler.name))
 
 	with multiprocessing.Pool(10) as pool:
-		pool.map(batch_convert, docs)
+		pool.map(batch_convert, [(crawler, doc) for doc in docs])
 		
-def batch_convert(doc):
+def batch_convert(data):
+	crawler, doc = data
 	mention = None
 	try:
 		parser  = ParserFactory.get_parser(ParserFactory.RAW_MENTION)
